@@ -1,8 +1,7 @@
-// src\redux\actionCreators.js
-
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
-import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
+// import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
+import { getDatabase, ref} from "firebase/database";
 
 
 //=================lOAD CATEGORIES==========//
