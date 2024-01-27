@@ -3,7 +3,6 @@ import * as actionTypes from "./actionTypes";
 
 const INITIAL_STATE = {
   // store firebase token and user id
-  // authActionCreaters.js theke dispatch hye nicher switchcase giye hit korle ekhan theke update hbe
   token: null,
   userId: null, // null means user is not authenticated
   // for auth spinner
@@ -49,7 +48,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
         userId: action.payload.userId,
       };
 
-    case actionTypes.AUTH_LOGOUT:
+    case actionTypes.AUTH_SIGNOUT:
       return {
         ...state,
         token: null,

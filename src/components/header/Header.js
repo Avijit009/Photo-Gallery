@@ -1,6 +1,6 @@
 import React from "react";
 import "./header.css";
-import { Navbar, NavbarBrand, Nav, NavItem } from "reactstrap";
+import { Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -27,12 +27,12 @@ const Header = (props) => {
       <Nav className="mr-md-5">
         <NavItem>
           <NavLink className="NavLink" to="/">
-            Burger Builder
+            All Photos
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink className="NavLink" to="/orders">
-            Orders
+          <NavLink className="NavLink" to="/gallery">
+            Gallery
           </NavLink>
         </NavItem>
         <NavItem>
@@ -53,7 +53,7 @@ const Header = (props) => {
       >
         <NavbarBrand href="/" className="mr-auto ml-md-5 Brand">
           {/* Using logo from public/assets */}
-          <img src="assets/logo.jpeg" alt="Logo" width={80} />
+          <img src="assets/logo.png" alt="Logo" width={80} />
         </NavbarBrand>
 
         {links}

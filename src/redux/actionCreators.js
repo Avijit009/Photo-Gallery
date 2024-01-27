@@ -1,10 +1,10 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
-// import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
-import { getDatabase, ref} from "firebase/database";
+import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
+// import { getDatabase, ref} from "firebase/database";
 
 
-//=================lOAD CATEGORIES==========//
+//for lOading categoriess
 export const loadCategories = (orders) => {
     return {
         type: actionTypes.LOAD_CATEGORIES,
@@ -18,7 +18,6 @@ export const categoryLoadFailed = () => {
     };
 };
 
-// dispatch above 2 fn
 // firebase auth token for secure viewing order history
 export const fetchOrders = (newAlbum) => (dispatch) => {
     const db = getDatabase();

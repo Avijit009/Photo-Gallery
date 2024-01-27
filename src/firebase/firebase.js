@@ -8,13 +8,14 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBsVvHqRLQsmQDFZHCey9N2vD0ILMMuXjU", //DOnes
-    authDomain: "react-photo-gallery-app-2.firebaseapp.com",
-    projectId: "photo-gallery-2999a", //Done
-    storageBucket: "react-photo-gallery-app-2.appspot.com",
-    messagingSenderId: "761081098835",
-    appId: "1:761081098835:web:d51e8fcbdef1267b320ca6",
-    databaseURL: "https://react-photo-gallery-app-2-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    apiKey: "AIzaSyBsVvHqRLQsmQDFZHCey9N2vD0ILMMuXjU",
+    authDomain: "photo-gallery-2999a.firebaseapp.com",
+    projectId: "photo-gallery-2999a",
+    storageBucket: "photo-gallery-2999a.appspot.com",
+    messagingSenderId: "514963035982",
+    appId: "1:514963035982:web:44b9949dd61b3019b8701f",
+    databaseURL: "https://photo-gallery-2999a-default-rtdb.firebaseio.com",
+    // measurementId: "G-36EMNYD2XT"
 };
 
 // Initialize Firebase
