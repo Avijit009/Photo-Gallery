@@ -4,14 +4,8 @@ import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 
 import "../../App.css";
-// import SingleAlbum from './SingleAlbum';
 
-// const onClickHandler = (categoryName) => {
-//     console.log("categoryname", categoryName);
-//     return <EachAlbum categoryName={categoryName} />;
-// };
-
-const CurrentAlbum = () => {
+const CurrentGallery = () => {
     const [dataList, setDataList] = useState([]);
 
     useEffect(() => {
@@ -38,8 +32,8 @@ const CurrentAlbum = () => {
         <div className="custom_container">
             <center>
                 {dataList.map((categoryName, index) => (
-                    <Link to={`/each-album/${categoryName}`} key={index}>
-                        <Button className="album_list_btn">
+                    <Link to={`/each-gallery/${categoryName}`} key={index}>
+                        <Button className="gallery_list_btn">
                             {categoryName}
                         </Button>
                     </Link>
@@ -49,4 +43,4 @@ const CurrentAlbum = () => {
     );
 };
 
-export default CurrentAlbum;
+export default CurrentGallery;

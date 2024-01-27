@@ -1,14 +1,15 @@
-import * as actionTypes from "./actionTypes";
 import axios from "axios";
-import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
-// import { getDatabase, ref} from "firebase/database";
+// import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
+import { getDatabase, ref} from "firebase/database";
+
+import * as actionTypes from "./actionTypes";
 
 
-//for lOading categoriess
-export const loadCategories = (orders) => {
+//for loading categoriess
+export const loadCategories = (categories) => {
     return {
         type: actionTypes.LOAD_CATEGORIES,
-        payload: orders,
+        payload: categories,
     };
 };
 
@@ -19,15 +20,15 @@ export const categoryLoadFailed = () => {
 };
 
 // firebase auth token for secure viewing order history
-export const fetchOrders = (newAlbum) => (dispatch) => {
+export const fetchGallery= (newGallery) => (dispatch) => {
     const db = getDatabase();
-    const Ref = ref(db, "Categories/" + newAlbum);
+    const Ref = ref(db, "Categories/" + newGallery);
     // //'&orderBy=userId' er 'userId' string firebase database er 'userId' column_name
     // const queryParams = '&orderBy="userId"&equalTo="' + userId + '"';
     // //don't use tabnine here
     axios
         .get(
-            `https://react-photo-gallery-app-2-default-rtdb.asia-southeast1.firebasedatabase.app/Categories/${Ref}.json`)
+            `"https://photo-gallery-2999a-default-rtdb.firebaseio.com"/Categories/${Ref}.json`)
         .then((response) => {
             //load order to redux
             dispatch(loadCategories(response.data));

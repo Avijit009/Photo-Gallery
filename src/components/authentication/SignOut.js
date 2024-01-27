@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { Navigate } from "react-router-dom";
 import { connect } from "react-redux";
+
 import { signout } from "../../redux/authActionCreators";
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        logout: () => dispatch(signout()),
+        signout: () => dispatch(signout()),
     };
 };
 
 class SignOut extends Component {
 
     componentDidMount() {
-        this.props.logout();
+        this.props.signout();
     }
 
     // It will navigate to homepage

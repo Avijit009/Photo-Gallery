@@ -3,29 +3,29 @@ import { Button, Form, Input, UncontrolledAlert } from "reactstrap";
 import { getDatabase, ref, set, onValue} from "firebase/database";
 
 
-export default class NewAlbumForm extends Component {
+export default class NewGalleryForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dataExistsAlert: false,
-            albumAddedAlert: false,
+            galleryAddedAlert: false,
             errorAlert: false,
         };
     }
     // post to firebase
-    writeUserData(newAlbum) {
+    writeUserData(newGallery) {
         const db = getDatabase();
-        set(ref(db, "Categories/" + newAlbum), {
-            category_name: newAlbum,
+        set(ref(db, "Categories/" + newGallery), {
+            category_name: newGallery,
         });
-        this.setState({ albumAddedAlert: true });
+        this.setState({ galleryAddedAlert: true });
     }
 
     // read if value already exists or not
-    ifDataExists(newAlbum) {
+    ifDataExists(newGallery) {
         let data = null;
         const db = getDatabase();
-        const starCountRef = ref(db, "Categories/" + newAlbum);
+        const starCountRef = ref(db, "Categories/" + newGallery);
         onValue(starCountRef, (snapshot) => {
             data = snapshot.val();
             console.log(data);
@@ -39,13 +39,12 @@ export default class NewAlbumForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         
-        const newAlbum = event.target.elements.newAlbum.value;
-        var x=this.ifDataExists(newAlbum);
+        const newGallery = event.target.elements.newGallery.value;
+        var x=this.ifDataExists(newGallery);
         
          
         //check if exists or not
         if (x === true) {
-            
             this.setState({ dataExistsAlert: true });
 
             setTimeout(() => {
@@ -54,9 +53,9 @@ export default class NewAlbumForm extends Component {
         }
         
         else {
-            this.writeUserData(newAlbum);
+            this.writeUserData(newGallery);
             setTimeout(() => {
-                this.setState({ albumAddedAlert: false });
+                this.setState({ galleryAddedAlert: false });
             }, 2000);
         }
        
@@ -81,21 +80,21 @@ export default class NewAlbumForm extends Component {
                 )}
 
                 {/* add album alert */}
-                {this.state.ALert_album_added && (
+                {this.state.galleryAddedAlert && (
                     <UncontrolledAlert color="success">
                         Album added successfully
                     </UncontrolledAlert>
                 )}
                 <Form onSubmit={this.handleSubmit}>
                     <Input
-                        placeholder="Enter Album Name:"
+                        placeholder="Enter Gallery Name:"
                         type="text"
-                        name="newAlbum"
+                        name="newGallery"
                     />
                     <br />
                     <br />
                     <Button type="submit" className="btn btn-success">
-                        Add Album
+                        Add Gallery
                     </Button>
                 </Form>
             </div>

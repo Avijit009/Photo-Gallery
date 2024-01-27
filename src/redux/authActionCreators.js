@@ -1,6 +1,7 @@
-import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import { getDatabase, ref, set } from "firebase/database";
+
+import * as actionTypes from "./actionTypes";
 
 
 export const authSuccess = (token, userId) => {
@@ -32,7 +33,6 @@ export const auth = (username, email, password, mode) => (dispatch) => {
     dispatch(authLoading(true)); // true will pass as payLoad
 
     const authData = {
-        username: username,
         email: email,
         password: password,
         returnSecureToken: true, // for firebase structure
@@ -75,6 +75,7 @@ export const auth = (username, email, password, mode) => (dispatch) => {
         var seconds = new Date().getTime();
         set(ref(db, "Credentials/" + seconds), {
             email: email,
+            username: username,
         });
     }
 
@@ -102,10 +103,8 @@ export const authCheck = () => (dispatch) => {
         //If token time expire
         dispatch(signout());
     } else {
-        
         const expirationTime = new Date(localStorage.getItem("expirationTime"));
 
-        
         if (expirationTime <= new Date()) {
             //logout
             dispatch(signout());

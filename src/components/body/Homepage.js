@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { storage } from "../../firebase/firebase";
-// import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
-import "../../App.css";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
+import { Link } from "react-router-dom";
 import {
     getDatabase,
     set,
@@ -13,7 +12,7 @@ import {
     get,
     orderByChild,
 } from "firebase/database";
-import { Link } from "react-router-dom";
+import "../../App.css";
 
 class Homepage extends Component {
     constructor(props) {
@@ -32,17 +31,17 @@ class Homepage extends Component {
         this.imageListRef = ref(storage, "images/");
     }
 
-    //======================== firebase =================//
+    //firebase
     // post to firebase
-    pictureUrlToFirebase(pic_Url) {
+    photoUrlToFirebase(pic_Url) {
         // seconds as unique id
         var seconds = new Date().getTime();
         const db = getDatabase();
-        set(ref_data(db, "Pictures/" + seconds), {
+        set(ref_data(db, "Photos/" + seconds), {
             url: pic_Url,
             category: "All",
         });
-        this.setState({ ALert_album_added: true });
+        this.setState({ galleryAddedAlert: true });
     }
 
     //================== modal======================//
@@ -56,17 +55,17 @@ class Homepage extends Component {
         }
     };
 
-    //================ image or not ==================//
+    //Image or not
     if_image(name) {
-        var s = "";
+        var imageType = "";
         for (let i = name.length - 1; i >= 0; i--) {
             if (name[i] === ".") break;
-            s = name[i] + s;
+            imageType = name[i] + imageType;
         }
-        return s === "jpg" || s === "png" || s === "jpeg";
+        return imageType === "jpg" || imageType === "png" || imageType === "jpeg";
     }
 
-    // ====================== upload img =======================//
+    // upload image
     uploadImage = () => {
         // const { imageUpload, imageList } = this.state;
         const { imageUpload } = this.state;
@@ -88,27 +87,10 @@ class Homepage extends Component {
                     imageList: new Set([...prevState.imageList, url]),
                 }));
                 alert("Image Uploaded");
-                this.pictureUrlToFirebase(url);
+                this.photoUrlToFirebase(url);
             });
         });
     };
-    // ===================== refresh =================//
-    // refresh = () => {
-    //     const { imageList } = this.state;
-    //     this.setState({ refresh_screen: true });
-
-    //     listAll(this.imageListRef).then((response) => {
-    //         const uniqueUrls = new Set(imageList);
-
-    //         response.items.forEach((item) => {
-    //             getDownloadURL(item).then((url) => {
-    //                 this.setState((prevState) => ({
-    //                     imageList: new Set([...prevState.imageList, url]),
-    //                 }));
-    //             });
-    //         });
-    //     });
-    // };
 
     // Fetching photos
     fetchPictures = async () => {
@@ -138,7 +120,7 @@ class Homepage extends Component {
         }
     };
 
-    // =================== component did mount =================//
+    // component did mount
     componentDidMount = () => {
         this.refresh_2();
     };
@@ -163,12 +145,7 @@ class Homepage extends Component {
     // ======================== component did update =======================//
 
     render() {
-        // if (this.state.refresh2 == true) {
-        //     this.refresh_2();
-        // }
-        // if (this.state.refresh_screen == false) {
-        //     this.refresh();
-        // }
+
         const { imageList } = this.state;
         var i = 0;
         console.log(i);
@@ -184,7 +161,7 @@ class Homepage extends Component {
                 <div className="img_div">
                     {this.state.pictureDataArray.map((pictureData, index) => (
                         <Link
-                            to={`/comments/${"Home"}/${pictureData.id} `}
+                            to={`/feedback/${"Homepage"}/${pictureData.id} `}
                             key={index}
                         >
                             <img
@@ -210,7 +187,7 @@ class Homepage extends Component {
                             onClick={this.uploadImage}
                             className="btn btn-primary"
                         >
-                            Upload Image
+                            Upload Photo
                         </button>
                     </ModalBody>
 
@@ -225,12 +202,12 @@ class Homepage extends Component {
                     </ModalFooter>
                 </Modal>
                 <button
-                    className="addNewAlbumButton"
+                    className="btn btn-secondary"
                     active
                     color="info"
                     onClick={this.toggleModal}
                 >
-                    Upload Picture
+                    Upload Photo
                 </button>
             </div>
         );
