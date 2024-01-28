@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import FeedbackForm from "./FeedbackForm";
-// import {
-//   getDatabase,
-//   ref,
-//   onValue,
-//   query,
-//   equalTo,
-//   get,
-//   orderByChild,
-// } from "firebase/database";
-
 import {
   getDatabase,
   ref,
@@ -19,8 +8,9 @@ import {
   get,
   orderByChild,
 } from "firebase/database";
+import FeedbackForm from "./FeedbackForm";
 
-//=========================== fetching name =========================//
+//=========================== fetching username =========================//
 async function fetchUN(user_name) {
   const db = getDatabase();
   const Ref = ref(db, "Credentials");
@@ -28,7 +18,7 @@ async function fetchUN(user_name) {
   try {
     const allRecordsSnapshot = await get(query(Ref, orderByChild("email")));
 
-    let name = null;
+    let username = null;
     if (allRecordsSnapshot.exists()) {
       allRecordsSnapshot.forEach((childSnapshot) => {
         const usernameData = {
@@ -37,55 +27,50 @@ async function fetchUN(user_name) {
         };
 
         if (usernameData.email === user_name) {
-          name = usernameData.username;
-          return name;
+          username = usernameData.username;
+          return username;
         }
       });
     }
-    return name;
+    return username;
   } catch (error) {
     throw error;
   }
 }
 
-// ======================== main comment fn ===========================//
+// ======================== main feedback function ===========================//
 
 const Feedback = () => {
   const [userName, setUserName] = useState(null);
-  const [pic, setPic] = useState(null);
+  const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(true);
 
   //========================= Load props from URL============================//
   const params = useParams();
-  const { picture_id } = params;
+  const { photo_id } = params;
 
-  //=========================== Load picture from Firebase=====================//
+  //=========================== Load photo from Firebase=====================//
   useEffect(() => {
     const db = getDatabase();
-    const pictureRef = ref(db, "Pictures/" + picture_id);
+    const photoRef = ref(db, "Photos/" + photo_id);
 
     const fetchData = async () => {
       try {
         // Listen for changes in the data
-        onValue(pictureRef, (snapshot) => {
-          const pictureData = snapshot.val();
-          setPic(pictureData);
+        onValue(photoRef, (snapshot) => {
+          const photoData = snapshot.val();
+          setPhoto(photoData);
           setLoading(false);
         });
       } catch (error) {
-        console.error("Error fetching picture:", error);
+        console.error("Error fetching photo:", error);
         setLoading(false);
       }
     };
 
     fetchData();
 
-    // Cleanup the listener when the component unmounts
-    // return () => {
-    //     // Detach the listener
-    //     onValue(pictureRef, null);
-    // };
-  }, [picture_id]); // Re-run effect when picture_id changes
+  }, [photo_id]); // Re-run effect when photo_id changes
 
   // =========================== get auth email from local storage ==========================//
 
@@ -98,40 +83,39 @@ const Feedback = () => {
       console.error("Error fetching username:", error);
     });
 
-  // console.log(userName);
+//   console.log(userName);
 
   // =============================== return =================================//
   return (
     <div>
       {loading ? (
         <p>Loading...</p>
-      ) : pic ? (
+      ) : photo ? (
         <center>
           <img
             style={{
               height: "27rem",
               width: "40rem",
             }}
-            src={pic.url}
+            src={photo.url}
             alt=""
           />
 
           <br />
           <h3>
-            Category: <strong>{pic.category}</strong>
+            Category: <strong>{photo.category}</strong>
           </h3>
         </center>
       ) : (
-        <p>Picture not found</p>
+        <p>Photo not found</p>
       )}
       <br />
       <br />
-      <center>
-        <h2>Comments:</h2>
-        <br />
-      </center>
-      <FeedbackForm picture_id={picture_id} username={userName} />
-    </div>
+      <h2>Feedback</h2>
+      <br />
+
+      <FeedbackForm photo_id={photo_id} username={userName} />
+    </div>  
   );
 };
 

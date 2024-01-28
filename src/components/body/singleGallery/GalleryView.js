@@ -1,12 +1,13 @@
-// src\Components\BodyComponent\EachAlbum_Subfolders\ViewAlbum.js
+// src\Components\BodyComponent\EachGallery_Subfolders\ViewGallery.js
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getDatabase, ref, query, orderByChild, get } from "firebase/database";
+import "../../../App.css";
 
 export default class GalleryView extends Component {
   state = {
     categoryName: null,
-    pictureDataArray: [], // Store picture data along with IDs
+    photoDataArray: [], // Store photo data along with IDs
     loading: true,
     refresh_screen: false,
   };
@@ -16,45 +17,45 @@ export default class GalleryView extends Component {
     const { categoryName } = this.props;
 
     try {
-      const pictureDataArray = await this.fetchPictures(categoryName);
+      const photoDataArray = await this.fetchPhotos(categoryName);
 
       this.setState({
         categoryName,
-        pictureDataArray,
+        photoDataArray,
         loading: false,
       });
     } catch (error) {
-      console.error("Error fetching pictures:", error);
+      console.error("Error fetching photos:", error);
       this.setState({
         loading: false,
       });
     }
   }
 
-  // ============== fetch pics ==================//
-  fetchPictures = async (categoryName) => {
+  // ============== fetch photos ==================//
+  fetchPhotos = async (categoryName) => {
     const db = getDatabase();
-    const picturesRef = ref(db, "Pictures");
+    const photosRef = ref(db, "Photos"); // Changed reference name to "Photos"
 
     try {
       const allRecordsSnapshot = await get(
-        query(picturesRef, orderByChild("category"))
+        query(photosRef, orderByChild("category"))
       );
 
-      const pictureDataArray = [];
+      const photoDataArray = [];
       if (allRecordsSnapshot.exists()) {
         allRecordsSnapshot.forEach((childSnapshot) => {
-          const pictureData = {
+          const photoData = {
             id: childSnapshot.key, // Store the unique ID
             ...childSnapshot.val(),
           };
 
-          if (pictureData.category === categoryName) {
-            pictureDataArray.push(pictureData);
+          if (photoData.category === categoryName) {
+            photoDataArray.push(photoData);
           }
         });
       }
-      return pictureDataArray;
+      return photoDataArray;
     } catch (error) {
       throw error;
     }
@@ -67,7 +68,7 @@ export default class GalleryView extends Component {
       this.refresh();
     }
     // console.log("s");
-    const { pictureDataArray, loading } = this.state;
+    const { photoDataArray, loading } = this.state;
 
     if (loading) {
       return <p>Loading...</p>;
@@ -77,15 +78,15 @@ export default class GalleryView extends Component {
       <div>
         <center>
           <div className="img_div">
-            {pictureDataArray.map((pictureData, index) => (
+            {photoDataArray.map((photoData, index) => (
               <Link
-                to={`/feedback/${this.state.categoryName}/${pictureData.id} `}
-                key={index}
+                to={`/feedback/${this.state.categoryName}/${photoData.id} `}
+                key={index} // Changed URL path and alt text
               >
                 <img
                   className="img_view"
-                  src={pictureData.url}
-                  alt={`${pictureData.id}`}
+                  src={photoData.url}
+                  alt={`${photoData.id}`}
                 />
               </Link>
             ))}

@@ -2,16 +2,6 @@ import React, { Component } from "react";
 import { Formik } from "formik";
 import "../../../App.css";
 import { ListGroup, ListGroupItem } from "reactstrap";
-// import {
-//     getDatabase,
-//     ref,
-//     set,
-//     onValue,
-//     child,
-//     get,
-//     query,
-//     orderByChild,
-// } from "firebase/database";
 import {
   getDatabase,
   ref,
@@ -23,67 +13,67 @@ import {
 
 class FeedbackForm extends Component {
   state = {
-    commentDataArray: [], // Store picture data along with IDs
+    feedbackDataArray: [], // Store feedback data along with IDs
     loading: true,
     refresh_screen: false,
   };
-  //====================== post comment  firebase =====================//
-  commentToDatabase(comment, picture_id, username) {
+  //====================== post feedback to firebase =====================//
+  feedbackToDatabase(feedback, photo_id, username) {
     const db = getDatabase();
+    console.log(db);
     var seconds = new Date().getTime();
-    set(ref(db, "Comments/" + seconds), {
-      picture_id: picture_id,
+    set(ref(db, "Feedback/" + seconds), {
+      photo_id: photo_id,
       username: username,
       dateTime: Date(seconds),
-      commentText: comment,
+      feedbackText: feedback,
     });
   }
   // ==================== refresh =====================//
   async refresh() {
     this.setState({ refresh_screen: true });
-    // const { picture_id, username } = this.props;
-    const { picture_id } = this.props;
+    const { photo_id } = this.props;
 
     try {
-      const commentDataArray = await this.fetchComments(picture_id);
+      const feedbackDataArray = await this.fetchFeedback(photo_id);
 
       this.setState({
-        commentDataArray,
+        feedbackDataArray,
         loading: false,
         refresh_screen: true,
       });
     } catch (error) {
-      console.error("Error fetching pictures:", error);
+      console.error("Error fetching feedback:", error);
       this.setState({
         loading: false,
       });
     }
   }
 
-  // ============== fetch comments ==================//
-  fetchComments = async (picture_id) => {
+  // ============== fetch feedbacks ==================//
+  fetchFeedback = async (photo_id) => {
     const db = getDatabase();
-    const Ref = ref(db, "Comments");
+    const Ref = ref(db, "Feedback");
 
     try {
       const allRecordsSnapshot = await get(
-        query(Ref, orderByChild("picture_id"))
+        query(Ref, orderByChild("photo_id"))
       );
 
-      const commentDataArray = [];
+      const feedbackDataArray = [];
       if (allRecordsSnapshot.exists()) {
         allRecordsSnapshot.forEach((childSnapshot) => {
-          const commentData = {
+          const feedbackData = {
             id: childSnapshot.key, // Store the unique ID
             ...childSnapshot.val(),
           };
 
-          if (commentData.picture_id === picture_id) {
-            commentDataArray.push(commentData);
+          if (feedbackData.photo_id === photo_id) {
+            feedbackDataArray.push(feedbackData);
           }
         });
       }
-      return commentDataArray;
+      return feedbackDataArray;
     } catch (error) {
       throw error;
     }
@@ -92,25 +82,25 @@ class FeedbackForm extends Component {
   // ==========================  render ===================================//
   render() {
     // ===================== props =======================//
-    const { picture_id, username } = this.props;
+    const { photo_id, username } = this.props;
 
     if (this.state.refresh_screen === false) {
       this.refresh();
     }
     // console.log("text");
 
-    //========================= comment  form =======================//
+    //========================= feedback form =======================//
     const form = (
       <Formik
         initialValues={
           // j field gulo thakbe auth page e
           {
-            comment: "",
+            feedback: "",
           }
         }
         onSubmit={(values, { resetForm }) => {
-          // console.log(values.comment);
-          this.commentToDatabase(values.comment, picture_id, username);
+          // console.log(values.feedback);
+          this.feedbackToDatabase(values.feedback, photo_id, username);
           resetForm();
         }}
         //==================== validation ==================//
@@ -119,8 +109,8 @@ class FeedbackForm extends Component {
         validate={(values) => {
           const errors = {};
           // empty kina
-          if (!values.comment) {
-            errors.email = "Required";
+          if (!values.feedback) {
+            errors.feedback = "Required";
           }
 
           //console.log("Errors",errors);
@@ -142,26 +132,23 @@ class FeedbackForm extends Component {
             <br />
             <form onSubmit={handleSubmit}>
               {/* field "name" will be same as initialValues field_names */}
-              <p style={{ color: "red" }}>
-                <strong>
-                  Note: To View the Updated Comment, You'll have to Refresh the
-                  Page
-                </strong>
+              <p style={{ color: "#001a13" }}>
+                <strong>Write your feedback about the photo.</strong>
               </p>
               <br />
               <input
-                name="comment"
-                placeholder="Write comment"
+                name="feedback"
+                placeholder="Write your feedback"
                 className="form-control"
-                value={values.comment}
+                value={values.feedback}
                 onChange={handleChange}
               />
-              <span style={{ color: "red" }}>{errors.comment}</span>
+              <span style={{ color: "red" }}>{errors.feedback}</span>
 
               <br />
 
               <button type="submit" className="btn btn-info">
-                Comment
+                Submit Feedback
               </button>
             </form>
           </div>
@@ -172,15 +159,14 @@ class FeedbackForm extends Component {
     return (
       <div>
         <ListGroup>
-          {this.state.commentDataArray.map((commentData) => (
+          {this.state.feedbackDataArray.map((feedbackData) => (
             <ListGroupItem
-              desabled
               href="#"
               tag="a"
               style={{ textAlign: "left" }}
             >
-              <h5 style={{ color: "blue" }}>{commentData.username}</h5>
-              <p>{commentData.commentText}</p>
+              <h5 style={{ color: "blue" }}>{feedbackData.username}</h5>
+              <p>{feedbackData.feedbackText}</p>
             </ListGroupItem>
           ))}
         </ListGroup>

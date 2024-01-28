@@ -9,10 +9,10 @@ import {
 } from "firebase/database";
 import "../../../App.css";
 
-export default class AddPhotoToAlbum extends Component {
+export default class AddPhotoToGallery extends Component {
   state = {
     categoryName: null,
-    pictureDataArray: [], // Store picture data along with IDs
+    photoDataArray: [], // Store photo data along with IDs
     loading: true,
   };
 
@@ -20,75 +20,76 @@ export default class AddPhotoToAlbum extends Component {
     const { categoryName } = this.props;
 
     try {
-      const pictureDataArray = await this.fetchPictures(categoryName);
+      const photoDataArray = await this.fetchPhotos(categoryName);
 
       this.setState({
         categoryName,
-        pictureDataArray,
+        photoDataArray,
         loading: false,
       });
     } catch (error) {
-      console.error("Error fetching pictures:", error);
+      console.error("Error fetching photos:", error);
       this.setState({
         loading: false,
       });
     }
   }
 
-  fetchPictures = async (categoryName) => {
+  fetchPhotos = async (categoryName) => {
     const db = getDatabase();
-    const picturesRef = ref(db, "Pictures");
+    const photosRef = ref(db, "Photos"); // Changed reference name to "Photos"
 
     try {
       const allRecordsSnapshot = await get(
-        query(picturesRef, orderByChild("category"))
+        query(photosRef, orderByChild("category"))
       );
 
-      const pictureDataArray = [];
+      const photoDataArray = [];
       if (allRecordsSnapshot.exists()) {
         allRecordsSnapshot.forEach((childSnapshot) => {
-          const pictureData = {
+          const photoData = {
             id: childSnapshot.key, // Store the unique ID
             ...childSnapshot.val(),
           };
 
-          if (pictureData.category !== categoryName) {
-            pictureDataArray.push(pictureData);
+          if (photoData.category !== categoryName) {
+            photoDataArray.push(photoData);
           }
         });
       }
-      return pictureDataArray;
+      return photoDataArray;
     } catch (error) {
       throw error;
     }
   };
 
   // ========================= update category =========================//
-  handlePictureClick = async (pictureData) => {
+  handlePhotoClick = async (photoData) => {
     const { categoryName } = this.state;
     const db = getDatabase();
-    // const picturesRef = ref(db, "Pictures");
-    // console.log(pictureData.url);
+    const photosRef = ref(db, "Photos");
+    console.log(photosRef);
+    // console.log(photoData.url);
     try {
-      await set(ref(db, "Pictures/" + pictureData.id), {
+      await set(ref(db, "Photos/" + photoData.id), {
         category: this.state.categoryName,
-        url: pictureData.url,
+        url: photoData.url,
       });
 
-      // Fetch updated pictures after the category change
-      const pictureDataArray = await this.fetchPictures(categoryName);
+      // Fetch updated photos after the category change
+      const photoDataArray = await this.fetchPhotos(categoryName);
 
       this.setState({
-        pictureDataArray,
+        photoDataArray,
       });
     } catch (error) {
-      console.error("Error updating picture category:", error);
+      console.error("Error updating photo category:", error);
     }
   };
 
   // ========================= render ================================//
   render() {
-    const { pictureDataArray, loading } = this.state;
+    const { photoDataArray, loading } = this.state;
 
     if (loading) {
       return <p>Loading...</p>;
@@ -97,17 +98,20 @@ export default class AddPhotoToAlbum extends Component {
     return (
       <div>
         <center>
-          <h3>Click Pictures to Add</h3>
+          <h3>Click Photos to Add</h3> {/* Changed text */}
           <div className="img_div">
-            {pictureDataArray.map((pictureData) => (
+            {photoDataArray.map((photoData) => (
               <button
-                key={pictureData.id} // Use the unique ID as the key
-                onClick={() => this.handlePictureClick(pictureData)}
+                key={photoData.id} // Use the unique ID as the key
+                onClick={
+                  () => this.handlePhotoClick(photoData) // Changed function name
+                }
                 style={{ border: "none" }}
               >
                 <img
-                  src={pictureData.url}
-                  alt={`${pictureData.id}`}
+                  className="img_view_modal"
+                  src={photoData.url}
+                  alt={`${photoData.id}`}
                 />
               </button>
             ))}

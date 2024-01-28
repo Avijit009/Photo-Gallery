@@ -1,10 +1,12 @@
+// src\Components\Spinner\Spinner.js
 import React from "react";
 import "./Spinner.css";
 
 const Spinner = () => {
   return (
-    <div className="loader">
-      <div class="loader">Loading...</div>
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
     </div>
   );
 };

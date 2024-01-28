@@ -2,17 +2,14 @@ import React, { Component } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 
-
-import Header from "./header/Header";
-import AuthForm from "./authentication/AuthForm";
-import SignOut from "./authentication/SignOut";
 import { authCheck } from "../redux/authActionCreators";
-import Homepage from "./body/Homepage";
-import SingleAlbum from "./body/SingleAlbum";
-import Feedback from "./body/feedback/Feedback";
-import Gallery from "./body/Gallery";
-
-
+import Header from './header/Header';
+import Homepage from './body/Homepage';
+import AuthForm from './authentication/AuthForm';
+import SignOut from "./authentication/SignOut";
+import Gallery from './body/Gallery';
+import EachGallery from './body/EachGallery';
+import Feedback from './body/feedback/Feedback';
 
 const mapStateToProps = (state) => {
     return {
@@ -51,16 +48,16 @@ class MainComponent extends Component {
                 <Routes>
                     <Route path="/" element={<Homepage />} />
                     <Route path="/signout" element={<SignOut />} />
-                    <Route path="/gallery" element={<Gallery />} />
+                    <Route path="/gallery" element={<Gallery />} /> {/* Replaced album with gallery */}
                     {/* dynamic param :categoryName */}
                     <Route
-                        path="/single-album/:categoryName"
-                        element={<SingleAlbum />}
+                        path="/each-gallery/:categoryName" // Replaced each-album with each-gallery
+                        element={<EachGallery />} // Replaced EachAlbum with EachGallery
                     />
 
                     <Route
-                        path="/feedback/:came_from/:picture_id"
-                        element={<Feedback />}
+                        path="/feedback/:came_from/:photo_id" // Replaced comments with feedback
+                        element={<Feedback />} // Replaced Comments with Feedback
                     />
                     {/* kono kisur sathe match na hole "/" */}
                     <Route path="*" element={<Navigate to="/" replace />} />

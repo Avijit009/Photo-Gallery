@@ -1,8 +1,8 @@
 import * as actionTypes from "./actionTypes";
-// import { authLoading } from "./authActionCreators";
 
 const INITIAL_STATE = {
   // store firebase token and user id
+  // authActionCreaters.js theke dispatch hye nicher switchcase giye hit korle ekhan theke update hbe
   token: null,
   userId: null, // null means user is not authenticated
   // for auth spinner
@@ -24,7 +24,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
       for (let key in action.payload) {
         categories.push({
           ...action.payload[key],
-          id: key, //Generate unique key
+          id: key, //For uinque keys
         });
       }
 
@@ -48,6 +48,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
         userId: action.payload.userId,
       };
 
+    //logout
     case actionTypes.AUTH_SIGNOUT:
       return {
         ...state,
@@ -62,6 +63,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
         authLoading: action.payload,
       };
 
+    // authentication error
     case actionTypes.AUTH_FAILED:
       return {
         ...state,

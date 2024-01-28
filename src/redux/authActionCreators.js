@@ -1,9 +1,10 @@
+// src\redux\authActionCreators.js
+import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import { getDatabase, ref, set } from "firebase/database";
 
-import * as actionTypes from "./actionTypes";
-
-
+//  eta dispatch hbe jokhn kono response ashbe firebase theke, means login/signUp hole
+//  nicher auth fn theke dis[atch hye kehane ashbe, erpor reducer.js e jabe]
 export const authSuccess = (token, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
@@ -30,13 +31,14 @@ export const authFailed = (errMsg) => {
 };
 
 export const auth = (username, email, password, mode) => (dispatch) => {
-    dispatch(authLoading(true)); // true will pass as payLoad
+    dispatch(authLoading(true)); // true ta payLoad hisebe pass hbe
 
     const authData = {
         email: email,
         password: password,
         returnSecureToken: true, // for firebase structure
     };
+    // VVI NOTE:FIREBASE weak/common/repeating character pass dle bad request ashe and request send hyna
 
     let authUrl = null;
     if (mode === "Sign Up") {
@@ -46,16 +48,22 @@ export const auth = (username, email, password, mode) => (dispatch) => {
         authUrl =
             "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=";
     }
-
+    // post link collected from: https://firebase.google.com/docs/reference/rest/auth
+    // this is default link for post
+    // API key from Firebase -> settings -> project settings-> web API Key
     let error = false;
-    const API_KEY = "AIzaSyBsVvHqRLQsmQDFZHCey9N2vD0ILMMuXjU";
+    const API_KEY = "AIzaSyDlRN9F-oCq4GnpW3Mh3vrlhTQy0nRQI-U";
     axios
         .post(authUrl + API_KEY, authData)
         .then((response) => {
             dispatch(authLoading(false));
+            // set token in browsers local storage
             localStorage.setItem("token", response.data.idToken);
             localStorage.setItem("userId", response.data.localId);
 
+            // new Date().getTime() return kore current time in milliseconds
+            // response.data.expiresIn return kore second e, tai 1000 multiply kora hoise
+            // eta abar Date e convert hbe
             const expirationTime = new Date(
                 new Date().getTime() + response.data.expiresIn * 2000
             );
@@ -72,7 +80,9 @@ export const auth = (username, email, password, mode) => (dispatch) => {
     //store in credentials table
     if (error === false && mode === "Sign Up") {
         const db = getDatabase();
+        // seconds will be unique user ID
         var seconds = new Date().getTime();
+        // console.log(seconds);
         set(ref(db, "Credentials/" + seconds), {
             email: email,
             username: username,
@@ -95,16 +105,18 @@ export const signout = () => {
     };
 };
 
-// it will call after loading the main
+// app load holei eta call korte hbe Main.js theke
 export const authCheck = () => (dispatch) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-        //If token time expire
+        // token na thakle logout
         dispatch(signout());
     } else {
+        // string return kore, new Date() oitake dateTime e convert kore
         const expirationTime = new Date(localStorage.getItem("expirationTime"));
 
+        // time expire kina chk
         if (expirationTime <= new Date()) {
             //logout
             dispatch(signout());

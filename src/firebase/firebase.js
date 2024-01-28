@@ -1,4 +1,6 @@
-// Functions for firebase use
+// src\firebase\firebase.js
+
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getDatabase } from "firebase/database";
@@ -8,14 +10,13 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBsVvHqRLQsmQDFZHCey9N2vD0ILMMuXjU",
-    authDomain: "photo-gallery-2999a.firebaseapp.com",
-    projectId: "photo-gallery-2999a",
-    storageBucket: "photo-gallery-2999a.appspot.com",
-    messagingSenderId: "514963035982",
-    appId: "1:514963035982:web:44b9949dd61b3019b8701f",
-    databaseURL: "https://photo-gallery-2999a-default-rtdb.firebaseio.com",
-    // measurementId: "G-36EMNYD2XT"
+  apiKey: "AIzaSyDlRN9F-oCq4GnpW3Mh3vrlhTQy0nRQI-U",
+  authDomain: "photo-gallery-224b9.firebaseapp.com",
+  databaseURL: "https://photo-gallery-224b9-default-rtdb.firebaseio.com/",
+  projectId: "photo-gallery-224b9",
+  storageBucket: "photo-gallery-224b9.appspot.com",
+  messagingSenderId: "1072049145660",
+  appId: "1:1072049145660:web:946e484e323907ee198039",
 };
 
 // Initialize Firebase

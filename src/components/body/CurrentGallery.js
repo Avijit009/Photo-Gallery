@@ -1,11 +1,11 @@
+// src\Components\BodyComponent\CurrentGalleryList.js
 import React, { useState, useEffect } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { Button } from "reactstrap";
+import "../../App.css";
 import { Link } from "react-router-dom";
 
-import "../../App.css";
-
-const CurrentGallery = () => {
+const CurrentGalleryList = () => { // Changed component name
     const [dataList, setDataList] = useState([]);
 
     useEffect(() => {
@@ -32,8 +32,8 @@ const CurrentGallery = () => {
         <div className="custom_container">
             <center>
                 {dataList.map((categoryName, index) => (
-                    <Link to={`/each-gallery/${categoryName}`} key={index}>
-                        <Button className="gallery_list_btn">
+                    <Link to={`/each-gallery/${categoryName}`} key={index}> {/* Changed URL path */}
+                        <Button className="gallery_list_btn"> {/* Changed class name */}
                             {categoryName}
                         </Button>
                     </Link>
@@ -43,4 +43,4 @@ const CurrentGallery = () => {
     );
 };
 
-export default CurrentGallery;
+export default CurrentGalleryList;

@@ -1,11 +1,12 @@
 import React from "react";
-import "./header.css";
-import { Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
+import { Navbar, NavbarBrand, Nav, NavItem } from "reactstrap";
+import "./Header.css";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 const mapStateToProps = (state) => {
   return {
+    // firebase login/signup token for auto login
     token: state.token,
   };
 };
@@ -13,11 +14,12 @@ const mapStateToProps = (state) => {
 const Header = (props) => {
   let links = null;
   if (props.token === null) {
+    // means not authenticated
     links = (
       <Nav className="mr-md-5">
         <NavItem>
-          <NavLink className="NavLink" to="/signup">
-            Sign Up / Sign In
+          <NavLink to="/signup" className="NavLink">
+            Sign In / Sign Up
           </NavLink>
         </NavItem>
       </Nav>
@@ -26,17 +28,17 @@ const Header = (props) => {
     links = (
       <Nav className="mr-md-5">
         <NavItem>
-          <NavLink className="NavLink" to="/">
-            All Photos
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink className="NavLink" to="/gallery">
+          <NavLink to="/" className="NavLink">
             Gallery
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink className="NavLink" to="/signout">
+          <NavLink to="/gallery" className="NavLink">
+            Photo Category
+          </NavLink>
+        </NavItem>
+        <NavItem className="ml-auto">
+          <NavLink to="/signout" className="NavLink">
             Sign Out
           </NavLink>
         </NavItem>
@@ -47,7 +49,7 @@ const Header = (props) => {
     <div className="Navigation">
       <Navbar
         style={{
-          backgroundColor: "#D70F64",
+          backgroundColor: "#001a13",
           height: "70px",
         }}
       >
@@ -55,7 +57,6 @@ const Header = (props) => {
           {/* Using logo from public/assets */}
           <img src="assets/logo.png" alt="Logo" width={80} />
         </NavbarBrand>
-
         {links}
       </Navbar>
     </div>

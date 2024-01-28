@@ -1,9 +1,10 @@
+// src\Components\BodyComponent\AddNewGalleryForm.js
 import React, { Component } from "react";
 import { Button, Form, Input, UncontrolledAlert } from "reactstrap";
-import { getDatabase, ref, set, onValue} from "firebase/database";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 
 
-export default class NewGalleryForm extends Component {
+export default class NewGalleryAditionForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -12,7 +13,7 @@ export default class NewGalleryForm extends Component {
             errorAlert: false,
         };
     }
-    // post to firebase
+
     writeUserData(newGallery) {
         const db = getDatabase();
         set(ref(db, "Categories/" + newGallery), {
@@ -21,7 +22,6 @@ export default class NewGalleryForm extends Component {
         this.setState({ galleryAddedAlert: true });
     }
 
-    // read if value already exists or not
     ifDataExists(newGallery) {
         let data = null;
         const db = getDatabase();
@@ -34,17 +34,14 @@ export default class NewGalleryForm extends Component {
         if (data != null) return true;
         return false;
     }
-    //Submit handler
-    
+
     handleSubmit = (event) => {
         event.preventDefault();
         
         const newGallery = event.target.elements.newGallery.value;
-        var x=this.ifDataExists(newGallery);
+        var dataExists =this.ifDataExists(newGallery);
         
-         
-        //check if exists or not
-        if (x === true) {
+        if (dataExists === true) {
             this.setState({ dataExistsAlert: true });
 
             setTimeout(() => {
@@ -65,36 +62,34 @@ export default class NewGalleryForm extends Component {
     render() {
         return (
             <div className="container" style={{ padding: "2rem" }}>
-                {/* error */}
                 {this.state.errorAlert && (
                     <UncontrolledAlert color="danger">
                         Something went wrong
                     </UncontrolledAlert>
                 )}
 
-                {/* data exists alert */}
                 {this.state.dataExistsAlert && (
                     <UncontrolledAlert color="danger">
-                        Album already exists! Enter a new Name
+                        Gallery already exists! Enter a new Name
                     </UncontrolledAlert>
                 )}
 
-                {/* add album alert */}
                 {this.state.galleryAddedAlert && (
                     <UncontrolledAlert color="success">
-                        Album added successfully
+                        Photo category added successfully
                     </UncontrolledAlert>
                 )}
                 <Form onSubmit={this.handleSubmit}>
                     <Input
-                        placeholder="Enter Gallery Name:"
+                        placeholder="Enter Photo Category Name"
                         type="text"
                         name="newGallery"
                     />
                     <br />
                     <br />
+                    <hr/>
                     <Button type="submit" className="btn btn-success">
-                        Add Gallery
+                        Add The Category
                     </Button>
                 </Form>
             </div>
