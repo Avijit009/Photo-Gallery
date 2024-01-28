@@ -10,7 +10,7 @@ import {
 } from "firebase/database";
 import FeedbackForm from "./FeedbackForm";
 
-//=========================== fetching username =========================//
+// fetching username 
 async function fetchUN(user_name) {
   const db = getDatabase();
   const Ref = ref(db, "Credentials");
@@ -38,18 +38,18 @@ async function fetchUN(user_name) {
   }
 }
 
-// ======================== main feedback function ===========================//
+// ======================== main feedback function 
 
 const Feedback = () => {
   const [userName, setUserName] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  //========================= Load props from URL============================//
+  // Load props from URL
   const params = useParams();
   const { photo_id } = params;
 
-  //=========================== Load photo from Firebase=====================//
+  // Load photo from Firebase
   useEffect(() => {
     const db = getDatabase();
     const photoRef = ref(db, "Photos/" + photo_id);
@@ -70,9 +70,9 @@ const Feedback = () => {
 
     fetchData();
 
-  }, [photo_id]); // Re-run effect when photo_id changes
+  }, [photo_id]);
 
-  // =========================== get auth email from local storage ==========================//
+  // get auth email from local storage 
 
   const email = localStorage.getItem("email");
   fetchUN(email)
@@ -83,9 +83,6 @@ const Feedback = () => {
       console.error("Error fetching username:", error);
     });
 
-//   console.log(userName);
-
-  // =============================== return =================================//
   return (
     <div>
       {loading ? (

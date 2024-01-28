@@ -45,7 +45,6 @@ class AuthForm extends Component {
             form = (
                 <Formik
                     initialValues={
-                        // j field gulo thakbe auth page e
                         {
                             username: "",
                             email: "",
@@ -61,9 +60,8 @@ class AuthForm extends Component {
                             this.state.mode
                         );
                     }}
-                    //==================== validation ==================//
-                    // for validation, built in props
-                    // validation check failed hole r shamne agabe na
+                    // validation
+                
                     validate={(values) => {
                         const errors = {};
                         if (this.state.mode === "Sign Up") {
@@ -71,11 +69,11 @@ class AuthForm extends Component {
                                 errors.username = "Required";
                             }
                         }
-                        // empty kina
+                        
                         if (!values.email) {
                             errors.email = "Required";
                         }
-                        // email adds invalid kina
+                       
                         else if (
                             !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i.test(
                                 values.email
@@ -92,7 +90,7 @@ class AuthForm extends Component {
                                 "Password must be at least 4 characters!";
                         }
 
-                        // pass confirm
+                        // password confirm
                         if (this.state.mode === "Sign Up") {
                             if (!values.passwordConfirm) {
                                 errors.passwordConfirm = "Required";
@@ -103,15 +101,10 @@ class AuthForm extends Component {
                                     "Password field does not match";
                             }
                         }
-
-                        //console.log("Errors",errors);
                         return errors;
                     }}
                 >
-                    {/* ei fn er vitor form render kora hbe */}
-                    {/* handleChange built in formik fn, er maddhome field er value auto form e upate hy */}
-                    {/* handleSubmit o built in fn */}
-                    {/* errors => to show errors under field input */}
+
                     {({ values, handleChange, handleSubmit, errors }) => (
                         <div
                             style={{
@@ -138,7 +131,6 @@ class AuthForm extends Component {
                             <br />
                             <br />
                             <form onSubmit={handleSubmit}>
-                                {/* field "name" will be same as initialValues field_names */}
                                 {this.state.mode === "Sign Up" ? (
                                     <div>
                                         <input
@@ -181,7 +173,7 @@ class AuthForm extends Component {
                                 </span>
 
                                 <br />
-                                {/* mode=="Sign Up" hole ei part dekhabe, nahole kisuna(null) dekhabe */}
+                                
                                 {this.state.mode === "Sign Up" ? (
                                     <div>
                                         <input

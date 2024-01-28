@@ -24,13 +24,11 @@ class Homepage extends Component {
       refresh_screen: false,
       photoDataArray: [],
       loading: false,
-      // refresh_2
-      refresh2: true,
+      refresh: true,
     };
     this.imageListRef = ref(storage, "images/");
   }
 
-  //======================== firebase =================//
   // post to firebase
   photoUrlToFirebase(photo_Url) {
     // seconds as unique id
@@ -43,7 +41,7 @@ class Homepage extends Component {
     this.setState({ albumAddedAlert: true });
   }
 
-  //================== modal======================//
+  // modal
   toggleModal = () => {
     this.setState({
       modalOpen: !this.state.modalOpen,
@@ -54,7 +52,7 @@ class Homepage extends Component {
     }
   };
 
-  //================ image or not ==================//
+  // image or not
   if_image(name) {
     var imageType = "";
     for (let i = name.length - 1; i >= 0; i--) {
@@ -64,7 +62,7 @@ class Homepage extends Component {
     return imageType === "jpg" || imageType === "png" || imageType === "jpeg";
   }
 
-  // ====================== upload img =======================//
+  //  upload img
   uploadImage = () => {
     const { imageUpload } = this.state;
 
@@ -129,8 +127,8 @@ class Homepage extends Component {
       this.setState({
         photoDataArray: photoDataArray,
         loading: false,
-        // refresh2
-        refresh2: false,
+        // refresh
+        refresh: false,
       });
     } catch (error) {
       console.error("Error fetching photos:", error);
@@ -140,13 +138,12 @@ class Homepage extends Component {
     }
   }
 
-  // ======================== component did update =======================//
 
   render() {
  
     const { imageList } = this.state;
-    var i = 0;
-    console.log(i);
+    // var i = 0;
+    // console.log(i);
 
     // setImageList to set
     const ListsOfImageList = new Set(imageList);
@@ -159,7 +156,7 @@ class Homepage extends Component {
         <h2>All Photos</h2>
         <div className="img_div">
           {this.state.photoDataArray.map((photoData, index) => (
-            <Link to={`/feedback/${"Home"}/${photoData.id} `} key={index}>
+            <Link to={`/feedback/${"Photo"}/${photoData.id}`} key={index}>
               <img
                 className="img_view"
                 src={photoData.url}
@@ -184,7 +181,6 @@ class Homepage extends Component {
             </button>
           </ModalBody>
 
-          {/* close button */}
           <ModalFooter>
             <button className="btn btn-primary" onClick={this.toggleModal}>
               Close

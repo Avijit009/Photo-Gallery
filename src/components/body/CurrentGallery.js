@@ -29,7 +29,7 @@ const CurrentGalleryList = () => { // Changed component name
     }, []); // Empty dependency array means this effect runs once after the initial render
 
     return (
-        <div className="custom_container">
+        <div className="myContainer">
             <center>
                 {dataList.map((categoryName, index) => (
                     <Link to={`/each-gallery/${categoryName}`} key={index}> {/* Changed URL path */}

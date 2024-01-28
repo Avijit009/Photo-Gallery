@@ -1,10 +1,8 @@
-// src\redux\authActionCreators.js
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import { getDatabase, ref, set } from "firebase/database";
 
-//  eta dispatch hbe jokhn kono response ashbe firebase theke, means login/signUp hole
-//  nicher auth fn theke dis[atch hye kehane ashbe, erpor reducer.js e jabe]
+
 export const authSuccess = (token, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
@@ -31,14 +29,14 @@ export const authFailed = (errMsg) => {
 };
 
 export const auth = (username, email, password, mode) => (dispatch) => {
-    dispatch(authLoading(true)); // true ta payLoad hisebe pass hbe
+    dispatch(authLoading(true));
 
     const authData = {
         email: email,
         password: password,
         returnSecureToken: true, // for firebase structure
     };
-    // VVI NOTE:FIREBASE weak/common/repeating character pass dle bad request ashe and request send hyna
+   
 
     let authUrl = null;
     if (mode === "Sign Up") {
@@ -48,9 +46,7 @@ export const auth = (username, email, password, mode) => (dispatch) => {
         authUrl =
             "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=";
     }
-    // post link collected from: https://firebase.google.com/docs/reference/rest/auth
-    // this is default link for post
-    // API key from Firebase -> settings -> project settings-> web API Key
+
     let error = false;
     const API_KEY = "AIzaSyDlRN9F-oCq4GnpW3Mh3vrlhTQy0nRQI-U";
     axios
@@ -61,9 +57,7 @@ export const auth = (username, email, password, mode) => (dispatch) => {
             localStorage.setItem("token", response.data.idToken);
             localStorage.setItem("userId", response.data.localId);
 
-            // new Date().getTime() return kore current time in milliseconds
-            // response.data.expiresIn return kore second e, tai 1000 multiply kora hoise
-            // eta abar Date e convert hbe
+
             const expirationTime = new Date(
                 new Date().getTime() + response.data.expiresIn * 2000
             );
