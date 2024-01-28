@@ -167,6 +167,7 @@ class AuthForm extends Component {
                                     className="form-control"
                                     value={values.password}
                                     onChange={handleChange}
+                                    type="password"
                                 />
                                 <span style={{ color: "red" }}>
                                     {errors.password}
@@ -182,6 +183,7 @@ class AuthForm extends Component {
                                             className="form-control"
                                             value={values.passwordConfirm}
                                             onChange={handleChange}
+                                            type="password"
                                         />
                                         <span style={{ color: "red" }}>
                                             {errors.passwordConfirm}

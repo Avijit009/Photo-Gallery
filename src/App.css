@@ -44,8 +44,8 @@
 .footer{
     background-color: #D1C4E9;
     margin: 0px auto;
-    padding-top: 10px;
-    position: fixed;
+    padding-top: 5px;
+    position: relative;
     bottom: 0;
-    width: 50%;
+    width: 100%;
   }
