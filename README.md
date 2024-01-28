@@ -1,4 +1,4 @@
-Live: https://photo-gallery-224b9.web.app/signup
+Live: https://photo-gallery-224b9.web.app/
 
 # Getting Started with Create React App
 
